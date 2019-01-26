@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Ester - The ECMAScript Personal Notebook</title>
+    <script src="script.js"></script>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="codemirror.css">
+    <script src="lib/codemirror/codemirror.js"></script>
+    <script src="lib/codemirror/javascript.js"></script>
+
+    <!-- PageDown -->
+    <link rel="stylesheet" type="text/css" href="pagedown.css" />
+    <script type="text/javascript" src="lib/PageDown/Markdown.Converter.js"></script>
+    <script type="text/javascript" src="lib/PageDown/Markdown.Sanitizer.js"></script>
+    <script type="text/javascript" src="lib/PageDown/Markdown.Editor.js"></script>
+</head>
+<body onload="loadState()" id="body">
+    <div id="end"></div>
+    <button onclick="addCode()">Add code</button>
+    <button onclick="addMarkdown()">Add markdown</button>
+</body>
+</html>
