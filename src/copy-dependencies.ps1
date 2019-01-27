@@ -1,8 +1,8 @@
 # CodeMirror 
-cp .\node_modules\codemirror\lib\ .\lib\codemirror\ -Recurse
-cp .\node_modules\codemirror\mode\javascript\javascript.js .\lib\codemirror\
+cp .\node_modules\codemirror\lib\ .\www\lib\codemirror\ -Recurse
+cp .\node_modules\codemirror\mode\javascript\javascript.js .\www\lib\codemirror\
 
 # PageDown 
-mkdir .\lib\pagedown
-cp .\node_modules\pagedown\Markdown.*.js .\lib\pagedown\
-cp .\node_modules\pagedown\wmd-buttons.png .\lib\pagedown\
+mkdir .\www\lib\pagedown
+cp .\node_modules\pagedown\Markdown.*.js .\www\lib\pagedown\
+cp .\node_modules\pagedown\wmd-buttons.png .\www\lib\pagedown\
