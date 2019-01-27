@@ -1,11 +1,7 @@
 {
   "name": "ester",
-  "version": "0.1.0",
-  "description": "EcmaScript Personal Notebook",
-  "main": "script.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "version": "0.2.0",
+  "description": "ECMAScript Personal Notebook",
   "dependencies": {
     "codemirror": "^5.43.0"
   },
@@ -13,9 +9,10 @@
     "http-server": "^0.11.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install-pagedown": "git clone https://github.com/StackExchange/pagedown.git node_modules\\pagedown",
-    "copy-dependencies": "powershell .\\copy-dependencies.ps1"
+    "install-pagedown": "powershell.exe git clone https://github.com/StackExchange/pagedown.git --depth=1 .\\node_modules\\pagedown;Remove-Item .\\node_modules\\pagedown\\.git\\ -Recurse -Force",
+    "copy-dependencies": "powershell.exe .\\copy-dependencies.ps1",
+    "clean": "git clean -d -f -x",
+    "start": "http-server www -c-1 -g -o"
   },
   "author": "Alan Mervitz",
   "license": "MIT"

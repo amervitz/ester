@@ -31,18 +31,23 @@ Inputs and outputs of code blocks are saved to local storage and the page is res
    ``` sh
    git clone https://github.com/amervitz/Ester.git
    ```
-2. Install the dependent libraries
+2. Go to the src folder
+   ``` sh
+   cd Ester/src
+   ``` 
+3. Install the dependent libraries
    ``` sh
    npm install
    npm run install-pagedown
    npm run copy-dependencies
    ```
 ## Local usage
-1. Start a web server to serve the static files
+1. Perform the installation steps
+2. Start the web server to serve the static files
    ``` sh
-   http-server
+   npm start
    ```
-2. Browse to http://127.0.0.1:8080
-3. Play around
-4. Make code changes
-4. Send me pull requests
+3. Browse to http://127.0.0.1:8080
+4. Play around
+5. Make code changes
+6. Send me pull requests
