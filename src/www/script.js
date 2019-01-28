@@ -1,19 +1,17 @@
-﻿// 📁 main.mjs
-var worker = new Worker("worker.js");
+﻿var worker = new Worker("worker.js");
 
 /**
  * 
  * @param {string} id 
  */
-function runCode(src, tgt) {
-    var source = document.getElementById(src);
+function runCode(codeId) {
+    var source = document.getElementById(`code-input-${codeId}`);
     worker.postMessage(source.value);
     worker.onmessage = (evnt) => {
-        var output = document.getElementById(tgt);
+        var output = document.getElementById(`code-output-${codeId}`);
         output.innerText = evnt.data;
 
-        var blockNum = src.split('-')[1];
-        localStorage.setItem(`code:${blockNum}`, 
+        localStorage.setItem(`code:${codeId}`, 
             JSON.stringify({ 
                 code: source.value,
                 output: evnt.data
@@ -42,9 +40,7 @@ function loadState() {
 }
 
 /** @type {string} */
-var codeTemplate = `<textarea id="code-{{num}}">{{code}}</textarea>
-<button id="run-{{num}}" onclick="runCode('code-{{num}}','output-{{num}}')">Execute</button>
-<pre id="output-{{num}}">{{output}}</pre>`;
+var codeTemplate = document.getElementById('code-template').innerHTML;
 
 /**
  * 
@@ -52,11 +48,12 @@ var codeTemplate = `<textarea id="code-{{num}}">{{code}}</textarea>
  * @param {any} vals 
  */
 function addCode(num, vals) {
-    if(num == null){
+    if(num){
+        var number = Number.parseInt(num);
+    } else {
         var nextBlock = localStorage.getItem("nextBlock") || 1;
         var number = Number.parseInt(nextBlock);
-    } else {
-        var number = Number.parseInt(num);
+        localStorage.setItem("nextBlock", number + 1);
     }
 
     var replaces = {
@@ -68,7 +65,6 @@ function addCode(num, vals) {
     var text = codeTemplate.replace(/{{num}}|{{code}}|{{output}}/g, function(matched){
         return replaces[matched];
     });
-    localStorage.setItem("nextBlock", number + 1);
     
     var template = document.createElement('template');
     template.innerHTML = text;
@@ -77,7 +73,7 @@ function addCode(num, vals) {
     var end = document.getElementById("end");
     body.insertBefore(template.content, end);
 
-    var newElement = document.getElementById(`code-${number}`);
+    var newElement = document.getElementById(`code-input-${number}`);
     var cm = CodeMirror.fromTextArea(newElement, {
         lineNumbers: true,
         mode: "javascript",
@@ -88,17 +84,59 @@ function addCode(num, vals) {
     });
 }
 
-var markdownTemplate = `<div id="wmd-button-bar-{{num}}"></div>
+function removeCode(codeId) {
+    // get the textarea element
+    var textarea = document.getElementById(`code-input-${codeId}`);
+    // get the associated CodeMirror
+    var codeMirror = textarea.nextElementSibling.CodeMirror;
+    // remove CodeMirror
+    codeMirror.toTextArea();
+    // remove the textarea
+    var codeDiv = document.getElementById(`code-${codeId}`);
+    codeDiv.remove();
+    // remove the local state
+    localStorage.removeItem(`code:${codeId}`);
+}
+
+function createCodeSnippet(codeId) {
+    let snippetValue = document.getElementById(`code-input-${codeId}`).value;
+    let snippetName = document.getElementById(`code-createSnippetName-value-${codeId}`).value;
+
+    if(snippetName && snippetValue) {
+        let snippetsText = localStorage.getItem("snippets");
+        let snippets = snippetsText !== null ? JSON.parse(snippetsText) : {};
+        snippets[snippetName] = snippetValue;
+        localStorage.setItem("snippets", JSON.stringify(snippets));
+    }
+}
+
+function insertCodeSnippet(codeId) {
+    let snippetName = document.getElementById(`code-insertSnippetName-value-${codeId}`).value;
+    var snippetsText = localStorage.getItem("snippets");
+    let snippets = snippetsText !== null ? JSON.parse(snippetsText) : {};
+
+    if(snippets[snippetName]) {
+        var codeMirror = document.getElementById(`code-input-${codeId}`).nextElementSibling.CodeMirror;
+        var currentValue = codeMirror.getValue();
+        var prefix = currentValue.length ? `${currentValue}\n` : currentValue;
+        codeMirror.setValue(`${prefix}${snippets[snippetName]}`);
+        codeMirror.save();
+    }
+}
+
+var markdownTemplate = `
+<div id="wmd-button-bar-{{num}}"></div>
 <textarea class="wmd-input" id="wmd-input-{{num}}">{{input}}</textarea>
 <div id="wmd-preview-{{num}}" class="wmd-preview">{{preview}}</div>
 <button id="wmd-save-{{num}}" onclick="saveMarkdown('{{num}}')">Save</button><br><br>`;
 
 function addMarkdown(num, vals) {
-    if(num == null){
+    if (num) {
+        var number = Number.parseInt(num);
+    } else {
         var nextBlock = localStorage.getItem("nextBlock") || 1;
         var number = Number.parseInt(nextBlock);
-    } else {
-        var number = Number.parseInt(num);
+        localStorage.setItem("nextBlock", number + 1);
     }
 
     var replaces = {
@@ -110,7 +148,6 @@ function addMarkdown(num, vals) {
     var text = markdownTemplate.replace(/{{num}}|{{input}}|{{preview}}/g, function(matched){
         return replaces[matched];
     });
-    localStorage.setItem("nextBlock", number + 1);
     
     var template = document.createElement('template');
     template.innerHTML = text;
@@ -119,7 +156,6 @@ function addMarkdown(num, vals) {
     var end = document.getElementById("end");
     body.insertBefore(template.content, end);
 
-    //var newElement = document.getElementById(`wmd-input-${number}`);
     var converter = new Markdown.Converter();
     var editor = new Markdown.Editor(converter, `-${number}`);
     editor.run();

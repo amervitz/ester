@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <title>Ester - The ECMAScript Personal Notebook</title>
-    <script src="script.js"></script>
-
+    <script src="script.js" defer></script>
+    
     <!-- CodeMirror -->
     <link rel="stylesheet" href="lib/codemirror/codemirror.css">
-    <link rel="stylesheet" href="codemirror.css">
+    <link rel="stylesheet" href="code.css">
     <script src="lib/codemirror/codemirror.js"></script>
     <script src="lib/codemirror/javascript.js"></script>
 
@@ -19,6 +19,17 @@
     <script type="text/javascript" src="lib/pagedown/Markdown.Editor.js"></script>
 </head>
 <body onload="loadState()" id="body">
+
+    <template id="code-template">
+        <div class="code" id="code-{{num}}">
+            <textarea id="code-input-{{num}}">{{code}}</textarea>
+            <button onclick="runCode('{{num}}')">Execute</button><button onclick="removeCode('{{num}}')">Remove</button><br>
+            <button onclick="createCodeSnippet('{{num}}')">Create snippet</button><input id="code-createSnippetName-value-{{num}}" type="text"></input><br>
+            <button onclick="insertCodeSnippet('{{num}}')">Insert snippet</button><input id="code-insertSnippetName-value-{{num}}" type="text"></input><br>
+            <div class="output"><pre id="code-output-{{num}}">{{output}}</pre></div>
+        </div>
+    </template>
+
     <div id="end"></div>
     <button onclick="addCode()">Add code</button>
     <button onclick="addMarkdown()">Add markdown</button>

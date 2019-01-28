@@ -1,0 +1,19 @@
+.code {
+	border: 1px solid rgb(228, 225, 225);
+	margin-bottom: 0.5em;
+}
+
+.code .output {
+	border-left: 29px solid #f7f7f7;
+}
+
+.code .output pre {
+	padding-left: 0.5em;
+	border-left: 1px solid rgb(228, 225, 225);
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.CodeMirror {
+	height: auto;
+}
