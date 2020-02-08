@@ -1,7 +1,7 @@
 **Ester** is a prototype 
 of a purely client-side ECMAScript notebook.
 
-You can try it out here: https://ester.alanmervitz.com.
+You can try it out here: https://alanmervitz.com/ester.
 
 ## About
 
